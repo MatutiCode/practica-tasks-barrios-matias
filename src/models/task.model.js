@@ -1,10 +1,10 @@
 import { DataTypes } from "sequelize";
-import { sequelize } from "src/config/database.js";
+import { sequelize } from "../config/database.js";
 
 export const Task = sequelize.define("task.model", {
   id: {
     type: DataTypes.INTEGER,
-    primarykey: true,
+    primaryKey: true,
     autoIncrement: true,
   },
   title: {
@@ -19,5 +19,6 @@ export const Task = sequelize.define("task.model", {
   isComplete: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
+    defaultValue: false,
   },
 });
