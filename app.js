@@ -28,3 +28,4 @@ const iniciarServidor = async () => {
 };
 
 iniciarServidor();
+const PORT = process.env.PORT || 3000;
