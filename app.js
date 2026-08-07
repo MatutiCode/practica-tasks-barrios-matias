@@ -1,10 +1,10 @@
 import express from "express";
 import { sequelize } from "./src/config/database.js";
 import userRoutes from "./src/routes/user.route.js";
-import userRoutes from "./src/routes/task.route.js";
+import taskRoutes from "./src/routes/task.route.js";
 
-const app = express;
-const PORT = 3000;
+const app = express();
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
@@ -14,7 +14,7 @@ app.use("/api/tasks", taskRoutes);
 const iniciarServidor = async () => {
   try {
     await sequelize.authenticate();
-    console.log("Conexión a la base de datos establecida con exito");
+    console.log("Conexión a la base de datos establecida con éxito");
 
     await sequelize.sync();
     console.log("Modelos sincronizados con la base de datos");
@@ -28,4 +28,3 @@ const iniciarServidor = async () => {
 };
 
 iniciarServidor();
-const PORT = process.env.PORT || 3000;

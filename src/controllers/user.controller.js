@@ -45,7 +45,7 @@ export const createUser = async (req, res) => {
   }
 };
 
-export const getUser = async (req, res) => {
+export const getUsers = async (req, res) => {
   try {
     const usuarios = await User.findAll();
     return res.status(200).json({ data: usuarios });
@@ -60,7 +60,7 @@ export const getUserById = async (req, res) => {
   try {
     const { id } = req.params;
     const usuario = await User.findByPk(id);
-    if (usuario) {
+    if (!usuario) {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }
     return res.status(200).json({ data: usuario });
@@ -77,7 +77,7 @@ export const updateUser = async (req, res) => {
     const { name, email, password } = req.body;
 
     const usuario = await User.findByPk(id);
-    if (usuario) {
+    if (!usuario) {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }
     if (name !== undefined) {
@@ -93,7 +93,7 @@ export const updateUser = async (req, res) => {
       ) {
         return res
           .status(400)
-          .json({ message: "Ya existe otro usuario con ese email" });
+          .json({ message: "Email invalido" });
       }
     }
     if (password !== undefined) {
@@ -122,7 +122,7 @@ export const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
     const usuario = await User.findByPk(id);
-    if (usuario) {
+    if (!usuario) {
       return res.status(400).json({ message: "Usuario no encontrado" });
     }
     await usuario.destroy();
