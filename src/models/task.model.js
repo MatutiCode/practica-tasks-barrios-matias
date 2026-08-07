@@ -1,23 +1,23 @@
 import { DataTypes } from "sequelize";
-import { sequelize } from "src/config/db.js";
+import { sequelize } from "src/config/database.js";
 
-export const Usuario = sequelize.define("task.model", {
+export const Task = sequelize.define("task.model", {
   id: {
-    type: DataType.INTEGER,
+    type: DataTypes.INTEGER,
     primarykey: true,
     autoIncrement: true,
   },
   title: {
-    type: DataType.STRING(100),
+    type: DataTypes.STRING(100),
     unique: true,
     allowNull: false,
   },
   description: {
-    type: DataType.STRING(100),
+    type: DataTypes.STRING(100),
     allowNull: false,
   },
   isComplete: {
-    type: DataType.BOOLEAN,
+    type: DataTypes.BOOLEAN,
     allowNull: false,
   },
 });

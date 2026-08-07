@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
-import { sequelize } from "src/config/db.js";
+import { sequelize } from "src/config/database.js";
 
-export const Usuario = sequelize.define("user.model", {
+export const user = sequelize.define("user.model", {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
