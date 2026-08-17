@@ -3,7 +3,7 @@ import { sequelize } from "../config/database.js";
 import { UserModel } from "./user.model.js";
 
 export const TaskModel = sequelize.define(
-  "task.model",
+  "Task",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -38,5 +38,4 @@ export const TaskModel = sequelize.define(
 
 //relacioens
 TaskModel.belongsTo(UserModel, { foreignKey: "user_id", as: "author" });
-
 UserModel.hasMany(TaskModel, { foreignKey: "user_id", as: "tareas" });

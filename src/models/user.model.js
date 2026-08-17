@@ -26,7 +26,7 @@ export const UserModel = sequelize.define("User", {
     allowNull: false,
     unique: true,
     references: {
-      model: "Peploe",
+      model: "People",
       key: "id",
     },
   },
@@ -35,4 +35,4 @@ export const UserModel = sequelize.define("User", {
 //relaciones
 UserModel.belongsTo(PersonModel, { foreignKey: "person_id", as: "owner" });
 
-(PersonModel.hasOne(UserModel), { foreignKey: "user_id", as: "user" });
+PersonModel.hasOne(UserModel, { foreignKey: "user_id", as: "user" });

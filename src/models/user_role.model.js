@@ -24,9 +24,8 @@ UserModel.belongsToMany(RoleModel, {
   foreignKey: "user_id",
   as: "roles",
 });
-(RoleModel.belongsToMany(UserModel),
-  {
-    through: UserRoleModel,
-    foreignKey: "role_id",
-    as: "users",
-  });
+RoleModel.belongsToMany(UserModel, {
+  through: UserRoleModel,
+  foreignKey: "role_id",
+  as: "users",
+});
