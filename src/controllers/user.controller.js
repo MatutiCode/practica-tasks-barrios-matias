@@ -1,4 +1,4 @@
-import { User } from "../models/user.model.js";
+import { UserModel } from "../models/user.model.js";
 
 export const createUser = async (req, res) => {
   try {
@@ -45,7 +45,7 @@ export const createUser = async (req, res) => {
   }
 };
 
-export const getUser = async (req, res) => {
+export const getUsers = async (req, res) => {
   try {
     const usuarios = await User.findAll();
     return res.status(200).json({ data: usuarios });

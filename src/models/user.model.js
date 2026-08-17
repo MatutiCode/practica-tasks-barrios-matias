@@ -1,7 +1,8 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../config/database.js";
+import { PersonModel } from "./person.model.js";
 
-export const user = sequelize.define("user.model", {
+export const UserModel = sequelize.define("User", {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -20,4 +21,18 @@ export const user = sequelize.define("user.model", {
     type: DataTypes.STRING(100),
     allowNull: false,
   },
+  person_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    unique: true,
+    references: {
+      model: "Peploe",
+      key: "id",
+    },
+  },
 });
+
+//relaciones
+UserModel.belongsTo(PersonModel, { foreignKey: "person_id", as: "owner" });
+
+(PersonModel.hasOne(UserModel), { foreignKey: "user_id", as: "user" });

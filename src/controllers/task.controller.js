@@ -1,8 +1,8 @@
-import { Task } from "../models/task.model.js";
+import { TaskModel } from "../models/task.model.js";
 
 export const createTask = async (req, res) => {
   try {
-    const { title, description, inComplete } = req.body;
+    const { title, description, isComplete } = req.body;
     if (!title || typeof title !== "string" || title.trim() === "") {
       return res.status(400).json({ message: "El titulo es obligatorio" });
     }
@@ -42,6 +42,29 @@ export const createTask = async (req, res) => {
     return res
       .status(500)
       .json({ message: "Error al crear la tarea", error: error.message });
+  }
+};
+
+export const getAllTasks = async (req, res) => {
+  try {
+    const tasks = await TaskModel.findAll({
+      include: [
+        {
+          model: UserModel,
+          as: "author",
+          include: [
+            {
+              model: PersonModel,
+              as: "owner",
+            },
+          ],
+        },
+      ],
+    });
+    return res.status(201).json(tasks);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Error interno del servidor" });
   }
 };
 
