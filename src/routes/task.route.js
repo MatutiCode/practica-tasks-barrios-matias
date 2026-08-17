@@ -7,12 +7,12 @@ import {
   deleteTask,
 } from "../controllers/task.controller.js";
 
-const router = Router();
+export const taskRouter = Router();
 
-router.post("/", createTask);
-router.get("/", getTasks);
-router.get("/:id", getTaskById);
-router.put("/:id", updateTask);
-router.delete("/:id", deleteTask);
+taskRouter.post("/", createTask);
+taskRouter.get("/", getTasks);
+taskRouter.get("/:id", getTaskById);
+taskRouter.put("/:id", updateTask);
+taskRouter.delete("/:id", deleteTask);
 
-export default router;
+export default taskRouter;

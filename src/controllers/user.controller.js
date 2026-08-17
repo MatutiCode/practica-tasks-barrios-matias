@@ -1,4 +1,4 @@
-import { User } from "../models/user.model.js";
+import { UserModel } from "../models/user.model.js";
 
 export const createUser = async (req, res) => {
   try {
@@ -91,9 +91,7 @@ export const updateUser = async (req, res) => {
         email.trim() === "" ||
         email.length > 100
       ) {
-        return res
-          .status(400)
-          .json({ message: "Email invalido" });
+        return res.status(400).json({ message: "Email invalido" });
       }
     }
     if (password !== undefined) {

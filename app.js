@@ -1,30 +1,24 @@
 import express from "express";
-import { sequelize } from "./src/config/database.js";
-import userRoutes from "./src/routes/user.route.js";
-import taskRoutes from "./src/routes/task.route.js";
+import { startDB } from "./src/config/database.js";
+import "./src/models/person.model.js";
+import "./src/models/user.model.js";
+import "./src/models/task.model.js";
+import "./src/models/role.model.js";
+import "./src/models/user_role.model.js";
+import { userRouter } from "./src/routes/user.route.js";
+import { taskRouter } from "./src/routes/task.route.js";
+import personRouter from "./src/routes/person.route.js";
+import roleRouter from "./src/routes/role.route.js";
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = 3001;
 
 app.use(express.json());
 
-app.use("/api/users", userRoutes);
-app.use("/api/tasks", taskRoutes);
+app.use("/api/tasks", taskRouter);
+app.use("/api/users", userRouter);
 
-const iniciarServidor = async () => {
-  try {
-    await sequelize.authenticate();
-    console.log("Conexión a la base de datos establecida con éxito");
-
-    await sequelize.sync();
-    console.log("Modelos sincronizados con la base de datos");
-
-    app.listen(PORT, () => {
-      console.log(`Servidor corriendo en http://localhost:${PORT}`);
-    });
-  } catch (error) {
-    console.log("Error al iniciar el servidor", error.message);
-  }
-};
-
-iniciarServidor();
+app.listen(PORT, async () => {
+  await startDB();
+  console.log(`Servidor listo http://localhost:${PORT}`);
+});
