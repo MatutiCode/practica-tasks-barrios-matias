@@ -14,7 +14,7 @@ export const createTask = async (req, res) => {
     if (
       !description ||
       typeof description !== "string" ||
-      description.trim === ""
+      description.trim() === ""
     ) {
       return res.status(400).json({ message: "La descripción es obligatoria" });
     }
@@ -29,14 +29,18 @@ export const createTask = async (req, res) => {
         .json({ message: "isComplete debe ser un valor booleano" });
     }
 
-    const existeTitle = await Task.findOne({ where: { title } });
+    const existeTitle = await TaskModel.findOne({ where: { title } });
     if (existeTitle) {
       return res
         .status(400)
         .json({ message: "Ya existe una tarea con este titulo" });
     }
 
-    const nuevaTarea = await Task.create({ title, description, isComplete });
+    const nuevaTarea = await TaskModel.create({
+      title,
+      description,
+      isComplete,
+    });
     return res.status(201).json({ message: "Tarea creada", data: nuevaTarea });
   } catch (error) {
     return res
@@ -70,7 +74,7 @@ export const getAllTasks = async (req, res) => {
 
 export const getTasks = async (req, res) => {
   try {
-    const tareas = await Task.findAll();
+    const tareas = await TaskModel.findAll();
     return res.status(200).json({ data: tareas });
   } catch (error) {
     return res
@@ -82,7 +86,7 @@ export const getTasks = async (req, res) => {
 export const getTaskById = async (req, res) => {
   try {
     const { id } = req.params;
-    const tarea = await Task.findByPk(id);
+    const tarea = await TaskModel.findByPk(id);
 
     if (!tarea) {
       return res.status(404).json({ message: "Tarea no encontrada" });
@@ -147,7 +151,7 @@ export const updateTask = async (req, res) => {
 export const deleteTask = async (req, res) => {
   try {
     const { id } = req.params;
-    const tarea = await Task.findByPk(id);
+    const tarea = await TaskModel.findByPk(id);
 
     if (!tarea) {
       return res.status(404).json({ message: "Tarea no encontrada" });

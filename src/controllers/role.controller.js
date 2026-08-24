@@ -3,7 +3,7 @@ import { UserModel } from "../models/user.model.js";
 
 export const createRole = async (req, res) => {
   try {
-    const { rolename } = req.nody;
+    const { rolename } = req.body;
     if (!rolename || typeof rolename !== "string" || rolename.trim() === "") {
       return res
         .status(400)

@@ -2,7 +2,7 @@ import { UserModel } from "../models/user.model.js";
 
 export const createUser = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, person_id } = req.body;
 
     if (!name || typeof name !== "string" || name.trim() === "") {
       return res.status(400).json({ message: "El nombre es obligatorio" });
@@ -28,26 +28,31 @@ export const createUser = async (req, res) => {
         .status(400)
         .json({ message: "La contraseña no puede superar los 100 caracteres" });
     }
-    const emailExistente = await User.findOne({ where: { email } });
+    const emailExistente = await UserModel.findOne({ where: { email } });
     if (emailExistente) {
       return res
         .status(400)
         .json({ message: "Ya existe un usuario con ese email" });
     }
-    const nuevoUsuario = await User.create({ name, email, password });
+    const nuevoUsuario = await UserModel.create({
+      name,
+      email,
+      password,
+      person_id,
+    });
     return res
       .status(201)
       .json({ message: "Usuario creado", data: nuevoUsuario });
   } catch (error) {
     return res
       .status(500)
-      .json({ message: "Error al crear el usuario", error: error });
+      .json({ message: "Error al crear el usuario", error: error.message });
   }
 };
 
 export const getUsers = async (req, res) => {
   try {
-    const usuarios = await User.findAll();
+    const usuarios = await UserModel.findAll();
     return res.status(200).json({ data: usuarios });
   } catch (error) {
     return res
@@ -59,7 +64,7 @@ export const getUsers = async (req, res) => {
 export const getUserById = async (req, res) => {
   try {
     const { id } = req.params;
-    const usuario = await User.findByPk(id);
+    const usuario = await UserModel.findByPk(id);
     if (usuario) {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }
@@ -76,7 +81,7 @@ export const updateUser = async (req, res) => {
     const { id } = req.params;
     const { name, email, password } = req.body;
 
-    const usuario = await User.findByPk(id);
+    const usuario = await UserModel.findByPk(id);
     if (usuario) {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }
@@ -121,7 +126,7 @@ export const updateUser = async (req, res) => {
 export const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const usuario = await User.findByPk(id);
+    const usuario = await UserModel.findByPk(id);
     if (usuario) {
       return res.status(400).json({ message: "Usuario no encontrado" });
     }
