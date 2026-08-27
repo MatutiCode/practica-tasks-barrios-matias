@@ -27,3 +27,17 @@ export const createTaskValidation = [
       return true;
     }),
 ];
+
+export const updateTaskValidation = [
+  body("title").optional().notEmpty().withMessage("El title no debe ser vacio"),
+  body("description").optional().notEmpty().withMessage("La descripción no debe ser vacio"),
+  body("isComplete").optional().notEmpty().withMessage("isComplete debe ser un valor booleano "),
+];
+
+export const IdTaskValidation = [
+  param("id").isInt({ min: 1 }).withMessage("El id debe ser un numero positivo").custom(async(value) => {
+    const tarea= await TaskModel.findByPK(value);
+    if (!tarea) throw new Error("la tarea no existe");
+    return true;
+  }),
+];
