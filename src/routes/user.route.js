@@ -14,7 +14,7 @@ export const userRouter = Router();
 userRouter.post("/", createUserValidation, validate,createUser);
 userRouter.get("/", getUsers);
 userRouter.get("/:id", userIdValidation, validate, getUserById);
-userRouter.put("/:id", updateUserValidation, validate, updateUser);
+userRouter.put("/:id", userIdValidation, updateUserValidation, validate, updateUser);
 userRouter.delete("/:id", userIdValidation, validate, deleteUser);
 
 export default userRouter;

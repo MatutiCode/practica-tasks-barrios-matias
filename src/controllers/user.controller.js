@@ -1,4 +1,5 @@
 import { UserModel } from "../models/user.model.js";
+import { matchedData } from "express-validator";
 
 export const createUser = async (req, res) => {
   try {
@@ -48,17 +49,14 @@ export const getUserById = async (req, res) => {
 export const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, email, password } = req.body;
-
     const usuario = await UserModel.findByPk(id);
     if (!usuario) {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }
 
-    await usuario.update({ name, email, password });
-    return res
-      .status(200)
-      .json({ message: "Usuario actualizado", data: usuario });
+    const data = matchedData(req, { locations: ["body"] });
+    await usuario.update(data);
+    return res.status(200).json({ message: "Usuario actualizado", data: usuario });
   } catch (error) {
     return res.status(500).json({
       message: "Error al actualizar el usuario",

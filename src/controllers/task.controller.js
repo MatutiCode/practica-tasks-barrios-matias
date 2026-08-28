@@ -1,6 +1,8 @@
 import { TaskModel } from "../models/task.model.js";
 import { UserModel } from "../models/user.model.js";
 import { PersonModel } from "../models/person.model.js";
+import { matchedData } from "express-validator";
+
 
 export const createTask = async (req, res) => {
   try {
@@ -74,14 +76,13 @@ export const getTaskById = async (req, res) => {
 export const updateTask = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, description, isComplete } = req.body;
-
     const tarea = await TaskModel.findByPk(id);
     if (!tarea) {
       return res.status(404).json({ message: "Tarea no encontrada" });
     }
 
-    await tarea.update({ title, description, isComplete });
+    const data = matchedData(req, { locations: ["body"] });
+    await tarea.update(data);
     return res.status(200).json({ message: "Tarea actualizada", data: tarea });
   } catch (error) {
     return res
