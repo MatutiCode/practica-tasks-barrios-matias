@@ -11,12 +11,14 @@ import personRouter from "./src/routes/person.route.js";
 import roleRouter from "./src/routes/role.route.js";
 
 const app = express();
-const PORT = 3001;
+const PORT = 3000;
 
 app.use(express.json());
 
 app.use("/api/tasks", taskRouter);
 app.use("/api/users", userRouter);
+app.use("/api/roles", roleRouter);
+app.use("/api/persons", personRouter);
 
 app.listen(PORT, async () => {
   await startDB();
