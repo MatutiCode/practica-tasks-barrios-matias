@@ -20,7 +20,7 @@ export const updateRoleValidation = [
     }),
 ];
 
-export const personIdValidation = [
+export const roleIdValidation = [
     param("id").isInt({ min: 1 }).withMessage("el id debe ser un numero positivo").custom(async(value) => {
         const persona = await PersonModel.findByPk(value);
         if (!persona) throw new Error("la persona no existe");

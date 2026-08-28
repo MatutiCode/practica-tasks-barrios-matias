@@ -5,11 +5,7 @@ getPeople,
 updatePerson,
 deletePerson,
 } from "../controllers/person.controller.js";
-import {
-createPersonValidation,
-pdatePersonValidation,
-personIdValidation,
-} from "../middlewares/validations/person.validation.js";
+import {createPersonValidation, updatePersonValidation, personIdValidation} from "../middlewares/validations/person.validation.js";
 import { validate } from "../middlewares/validate.js";
 
 const personRouter = Router();
