@@ -5,7 +5,7 @@ import { validate } from "../middlewares/validate.js";
 
 const roleRouter = Router();
 
-roleRouter.post("/", createRole);
+roleRouter.post("/", createRoleValidation, validate, createRole);
 roleRouter.get("/", getRoles);
 
 export default roleRouter;
