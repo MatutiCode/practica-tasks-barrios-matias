@@ -1,5 +1,5 @@
-import { body } from "express-validator";
-import { UserModel } from "../../models/user.model";
+import { body, param } from "express-validator";
+import { UserModel } from "../../models/user.model.js";
 
 export const createUserValidation = [
   body("name").notEmpty().withMessage("El name no debe ser vacio"),

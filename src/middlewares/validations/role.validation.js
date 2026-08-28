@@ -1,4 +1,4 @@
-import { body } from "express-validator"
+import { body, param  } from "express-validator"
 import { RoleModel } from "../../models/role.model.js"
 
 export const createRoleValidation = [

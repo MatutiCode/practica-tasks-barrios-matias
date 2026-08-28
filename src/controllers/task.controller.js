@@ -1,45 +1,16 @@
 import { TaskModel } from "../models/task.model.js";
+import { UserModel } from "../models/user.model.js";
+import { PersonModel } from "../models/person.model.js";
 
 export const createTask = async (req, res) => {
   try {
-    const { title, description, isComplete } = req.body;
-    if (!title || typeof title !== "string" || title.trim() === "") {
-      return res.status(400).json({ message: "El titulo es obligatorio" });
-    }
-    if (title.length > 100) {
-      return res
-        .status(400)
-        .json({ message: "El titulo no puede superar los 100 caracteres" });
-    }
-    if (
-      !description ||
-      typeof description !== "string" ||
-      description.trim() === ""
-    ) {
-      return res.status(400).json({ message: "La descripción es obligatoria" });
-    }
-    if (description.length > 100) {
-      return res.status(400).json({
-        message: "La descripción no puede superar los 100 caracteres",
-      });
-    }
-    if (isComplete !== undefined && typeof isComplete !== "boolean") {
-      return res
-        .status(400)
-        .json({ message: "isComplete debe ser un valor booleano" });
-    }
-
-    const existeTitle = await TaskModel.findOne({ where: { title } });
-    if (existeTitle) {
-      return res
-        .status(400)
-        .json({ message: "Ya existe una tarea con este titulo" });
-    }
+    const { title, description, isComplete, user_id } = req.body;
 
     const nuevaTarea = await TaskModel.create({
       title,
       description,
       isComplete,
+      user_id,
     });
     return res.status(201).json({ message: "Tarea creada", data: nuevaTarea });
   } catch (error) {
@@ -65,7 +36,7 @@ export const getAllTasks = async (req, res) => {
         },
       ],
     });
-    return res.status(201).json(tasks);
+    return res.status(200).json({ data: tasks });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Error interno del servidor" });
@@ -105,38 +76,9 @@ export const updateTask = async (req, res) => {
     const { id } = req.params;
     const { title, description, isComplete } = req.body;
 
-    const tarea = await Task.findByPk(id);
+    const tarea = await TaskModel.findByPk(id);
     if (!tarea) {
       return res.status(404).json({ message: "Tarea no encontrada" });
-    }
-    if (title !== undefined) {
-      if (
-        typeof title !== "string" ||
-        title.trim() === "" ||
-        title.length > 100
-      ) {
-        return res.status(400).json({ message: "Titulo invalido" });
-      }
-      const existeTitle = await Task.findOne({ where: { title } });
-      if (existeTitle && existeTitle.id !== tarea.id) {
-        return res
-          .status(400)
-          .json({ message: "Ya existe otra tarea con ese titulo" });
-      }
-    }
-    if (description !== undefined) {
-      if (
-        typeof description !== "string" ||
-        description.trim() === "" ||
-        description.length > 100
-      ) {
-        return res.status(400).json({ message: "Descripción invalida" });
-      }
-    }
-    if (isComplete !== undefined && typeof isComplete !== "boolean") {
-      return res
-        .status(400)
-        .json({ message: "isComplete debe ser un valor booleano" });
     }
 
     await tarea.update({ title, description, isComplete });
@@ -144,7 +86,7 @@ export const updateTask = async (req, res) => {
   } catch (error) {
     return res
       .status(500)
-      .json({ message: "Error al actualziar", error: error.message });
+      .json({ message: "Error al actualizar", error: error.message });
   }
 };
 

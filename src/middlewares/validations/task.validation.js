@@ -1,4 +1,4 @@
-import { body } from "express-validator";
+import { body, param } from "express-validator";
 import { TaskModel } from "../../models/task.model.js";
 import { UserModel } from "../../models/user.model.js";
 
@@ -34,9 +34,9 @@ export const updateTaskValidation = [
   body("isComplete").optional().notEmpty().withMessage("isComplete debe ser un valor booleano "),
 ];
 
-export const IdTaskValidation = [
-  param("id").isInt({ min: 1 }).withMessage("El id debe ser un numero positivo").custom(async(value) => {
-    const tarea= await TaskModel.findByPK(value);
+export const taskIdValidation = [
+  param("id").isInt({ min: 1 }).withMessage("El id debe ser un numero positivo").custom(async (value) => {
+    const tarea = await TaskModel.findByPk(value);
     if (!tarea) throw new Error("la tarea no existe");
     return true;
   }),
