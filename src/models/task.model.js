@@ -33,7 +33,10 @@ export const TaskModel = sequelize.define(
       },
     },
   },
-  {},
+  {
+    paranoid: true,
+    timestamps: true,
+  }
 );
 
 //relacioens

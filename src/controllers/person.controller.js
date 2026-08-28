@@ -1,5 +1,6 @@
 import { PersonModel } from "../models/person.model.js";
 import { UserModel } from "../models/user.model.js";
+import { matchedData } from "express-validator";
 
 export const createPerson = async (req, res) => {
   try {
@@ -42,5 +43,38 @@ export const getPeople = async (req, res) => {
     return res
       .status(500)
       .json({ message: "error al obtener las personas", error: error.message });
+  }
+};
+
+export const updatePerson = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const persona = await PersonModel.findByPk(id);
+    if (!persona) {
+      return res.status(404).json({ message: "Persona no encontrada" });
+    }
+    const data = matchedData(req, { locations: ["body"] });
+    await persona.update(data);
+    return res.status(200).json({ message: "Persona actualizada", data: persona });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Error al actualizar la persona", error: error.message });
+  }
+};
+
+export const deletePerson = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const persona = await PersonModel.findByPk(id);
+    if (!persona) {
+      return res.status(404).json({ message: "Persona no encontrada" });
+    }
+    await persona.destroy();
+    return res.status(200).json({ message: "Persona eliminada" });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Error al eliminar la persona", error: error.message });
   }
 };

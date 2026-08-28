@@ -1,5 +1,6 @@
 import { RoleModel } from "../models/role.model.js";
 import { UserModel } from "../models/user.model.js";
+import { matchedData } from "express-validator";
 
 export const createRole = async (req, res) => {
   try {
@@ -39,5 +40,34 @@ export const getRoles = async (req, res) => {
     return res
       .status(500)
       .json({ message: "Error al obtener los roles", error: error.message });
+  }
+};
+
+export const updateRole = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const rol = await RoleModel.findByPk(id);
+    if (!rol) {
+      return res.status(404).json({ message: "rol no encontrado"});
+    }
+    const data = matchedData(req, { locations: ["body"]});
+    await rol.update(data);
+    return res.status(200).json({ message: "Rol actualizado", data: rol})
+  } catch (error) {
+    return res.status(500).json({ message: "error al actualizar el rol", error: error.message})
+  }
+};
+
+export const deleteRole = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const rol = await RoleModel.findByPk(id);
+    if (!rol) {
+      return res.status(404).json({ message: "rol no encontrado"});
+    }
+    await rol.destroy();
+    return res.status(200).json({ message: "rol eliminado"});
+  } catch (error) {
+    return res.status(500).json({ message: "error al eliminar el rol", error: error.message});
   }
 };
